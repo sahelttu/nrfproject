@@ -8,6 +8,6 @@
 
 int main(void)
 {
-	printk("Hello World! %s\n", CONFIG_BOARD);
+	printk("Hello IoT World\n");
 	return 0;
 }
