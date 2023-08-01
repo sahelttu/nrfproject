@@ -12,7 +12,7 @@ int main(void)
 	printk("Hello IoT World\n");
 	led_control_initialize();
 	led_control_blink(LED_COLOR_RED, 3);
-	led_control_blink(LED_COLOR_BLUE, 4);
-	led_control_blink(LED_COLOR_GREEN, 5);
+	led_control_blink(LED_COLOR_BLUE, 3);
+	led_control_blink(LED_COLOR_GREEN, 3);
 	return 0;
 }
