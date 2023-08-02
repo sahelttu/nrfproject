@@ -64,7 +64,7 @@ int32_t led_control_set_state(LED_COLOR1 color, LED_STATE state){
         case LED_COLOR_BLUE:
         returncode = gpio_pin_set_dt(&bluespec, state);
         default:
-        printk("No color/invalid color was given.");
+        printk("No color/invalid color was given.\n");
         break;
     }
     printk("%d has blinked\n", color);
