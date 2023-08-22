@@ -12,3 +12,5 @@ target_sources(app PRIVATE src/led_control.c)
 target_sources(app PRIVATE src/button_handler.c)
 
 target_sources(app PRIVATE src/watchdog_management.c)
+
+target_sources(app PRIVATE src/network.c)

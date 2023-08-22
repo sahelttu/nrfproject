@@ -7,13 +7,27 @@
 #include <zephyr/kernel.h>
 #include "led_control.h"
 #include "button_handler.h"
+#include "network.h"
 #include "watchdog_management.h"
+#include <modem/nrf_modem_lib.h>
+
+
 
 static button_handler_config buttonconfig;
 struct wdt_timeout_cfg toconfig;
 
 int main(void)
 {
+	int retcode;
+	retcode = nrf_modem_lib_init();
+	if(retcode){
+		printk(" nrf_modem_lib_init error\n");
+	}else{
+		printk("nrf_modem_lib_init success\n");
+	}
+
+	network_initialize();
+	
 	printk("Hello IoT World\n");
 	toconfig.window.min = 0;
 	toconfig.window.max = 20000;
@@ -25,6 +39,9 @@ int main(void)
 	led_control_blink(LED_COLOR_BLUE, 1);
 	led_control_blink(LED_COLOR_GREEN, 1);
 
+	network_connect();
+
+	network_disconnect();
 	while(1){
 		k_msleep(7000);
 		watchdog_feed();
