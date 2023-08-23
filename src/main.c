@@ -9,12 +9,26 @@
 #include "button_handler.h"
 #include "network.h"
 #include "watchdog_management.h"
+#include "mqtt_manage.h"
 #include <modem/nrf_modem_lib.h>
 
 
 
 static button_handler_config buttonconfig;
 struct wdt_timeout_cfg toconfig;
+
+	int32_t example_payload_publish(){
+		static int32_t some_sensor_value = 23;
+		uint8_t message[128];
+		uint8_t topic[128];
+
+		sprintf(message, "%d", some_sensor_value++);
+		sprintf(topic, "%s/temperature", MQTT_CLIENT_ID);
+
+		printk("Publishing message %s\n", message);
+		printk("Topic %s\n", topic);
+		return mqtt_manage_publish(message, strlen(message),topic, strlen(topic));
+	}
 
 int main(void)
 {
@@ -35,12 +49,14 @@ int main(void)
 	watchdog_initialize(&toconfig);
 	button_handler_initialize(buttonconfig);
 	led_control_initialize();
-	led_control_blink(LED_COLOR_RED, 1);
-	led_control_blink(LED_COLOR_BLUE, 1);
-	led_control_blink(LED_COLOR_GREEN, 1);
 
 	network_connect();
+	mqtt_manage_initialize();
+	mqtt_manage_connect();
 
+	example_payload_publish();
+
+	mqtt_manage_disconnect();
 	network_disconnect();
 	while(1){
 		k_msleep(7000);
